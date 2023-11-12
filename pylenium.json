@@ -1,6 +1,14 @@
 {
   "driver": {
-    "browser": "chrome"
+    "browser": "chrome",
+    "capabilities": {
+      "build": "pytest build",
+      "name": "pytest tutorial",
+      "platform": "Windows 10",
+      "browserName": "Chrome",
+      "version": "89.0",
+      "resolution": "1024x768"
+    }
   }
 }
 

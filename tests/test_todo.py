@@ -1,4 +1,6 @@
+import os
 import pytest
+from selenium import webdriver
 from pylenium.driver import Pylenium
 from pylenium.element import Element, Elements
 
@@ -21,6 +23,30 @@ class TodoPage:
         self.py.get('#sampletodotext').type(name)
         self.py.get('#addbutton').click()
         return self
+
+
+@pytest.fixture
+def selenium():
+    # 1. Define the 3 pieces we need to connect to lambdatest
+    username = os.getenv('LT_USERNAME')
+    access_key = os.getenv('LT_ACCESS_KEY')
+    remote_ul = 'https://{}:{}@hub.lambdatest.com/wd/hub'.format(username, access_key)
+    # 2. Define the desired Capabilities of this Test Run
+    desired_caps = {
+        "build": "Selenium Example",
+        "name": "Selenium Example Run",
+        "platform": "Windows 10",
+        "browserName": "Chrome",
+        "version": "89.0",
+        "resolution": "1024x768"
+    }
+    # 3. Instantiate the new Remote WebDriver that is connected to LambdaTest
+    driver = webdriver.Remote(
+        command_executor=remote_ul,
+    )
+    # 4. yield the driver so the test can use it
+    yield driver
+    driver.quit()
 
 
 @pytest.fixture
